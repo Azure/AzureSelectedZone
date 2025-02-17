@@ -146,9 +146,9 @@ After few moments of response preview, verify if the VM was created with the Nam
 Template & parameters files are pre-populated with sample values. Please modify as desired. 
 ### Step 3. Run deploy.ps1 in PowerShell
 Upload the files is Cloud Shell is being used. Else store the above files in a location from where the PowerShell commands are run: (make edits where **{}**)
-``log
+```log
 Run the script: > .\deploy.ps1 -Location ‘eastus2euap’ -SubscriptionId ‘{WhitelistedSubscriptionID}’ -ResourceGroupName ‘{giveDesiredRGName}’ -TemplateParameterFile ‘parameters.json’ -TemplateFile ‘template.json’ -VirtualMachineName ‘{giveDesiredVMName}’ -VirtualNetworkName ‘{giveDesiredNICName}’
-``
+```
 ### Step 4: Review the created VM
 After few moments of response preview, verify if the VM was created with the Name provided in the API Call.
 ![image](./AnyZoneVM.png)
