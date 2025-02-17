@@ -137,8 +137,11 @@ After few moments of response preview, verify if the VM was created with the Nam
 ![image](https://github.com/user-attachments/assets/958623c4-f383-4cfd-840a-3d5e8a3c3a2c)
 
 ## Creating VM using Azure Selected Zone via ARM template
-### Step 1: Download the template, parameters & deploy scripts from below: 
-[AnyZonePrivatePreview.zip](https://github.com/user-attachments/files/18823758/AnyZonePrivatePreview.zip)
+### Step 1: Download the template, parameters & deploy raw files from below: 
+1. [template.json](./template.json)
+2. [parameters.json](./parameters.json)
+3. [deploy.ps1](./deploy.ps1)
+
 ### Step 2:  Review the template & parameters files
 Template & parameters files are pre-populated with sample values. Please modify as desired. 
 ### Step 3. Run deploy.ps1 in PowerShell
