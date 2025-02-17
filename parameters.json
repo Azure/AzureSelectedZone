@@ -1,0 +1,201 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "eastasia"
+        },
+        "networkSecurityGroupName": {
+            "value": "anyzonevm-host-nsg"
+        },
+        "networkSecurityGroupRules": {
+            "value": [
+                {
+                    "name": "SSH",
+                    "properties": {
+                        "priority": 300,
+                        "protocol": "TCP",
+                        "access": "Allow",
+                        "direction": "Inbound",
+                        "sourceAddressPrefix": "*",
+                        "sourcePortRange": "*",
+                        "destinationAddressPrefix": "*",
+                        "destinationPortRange": "22"
+                    }
+                }
+            ]
+        },
+        "subnetName": {
+            "value": "default"
+        },
+        "virtualNetworkName": {
+            "value": "anyzone-nopip-vnet"
+        },
+        "addressPrefixes": {
+            "value": [
+                "10.0.0.0/16"
+            ]
+        },
+        "subnets": {
+            "value": [
+                {
+                    "name": "default",
+                    "properties": {
+                        "addressPrefix": "10.0.0.0/24"
+                    }
+                }
+            ]
+        },
+        "publicIpAddressName": {
+            "value": "anyzonevm-host-ip"
+        },
+        "publicIpAddressType": {
+            "value": "Static"
+        },
+        "publicIpAddressSku": {
+            "value": "Standard"
+        },
+        "virtualMachineComputerName": {
+            "value": "anyzonevm-host"
+        },
+        "virtualMachineRG": {
+            "value": "saptiAnyZone"
+        },
+        "osDiskType": {
+            "value": "Premium_LRS"
+        },
+        "osDiskDeleteOption": {
+            "value": "Detach"
+        },
+        "virtualMachineSize": {
+            "value": "Standard_D8s_v3"
+        },
+        "networkInterfaceName": {
+            "value": "anyzonevm-host20"
+        },
+        "nicDeleteOption": {
+            "value": "Detach"
+        },
+        "adminUsername": {
+            "value": "azureuser"
+        },
+        "admimPassword": {
+            "value": "azureuseR@123456"
+        },
+        "dataDisks": {
+            "value": [
+                {
+                    "lun": 0,
+                    "createOption": "attach",
+                    "deleteOption": "Detach",
+                    "caching": "None",
+                    "writeAcceleratorEnabled": false,
+                    "id": null,
+                    "name": "test_DataDisk_0",
+                    "storageAccountType": null,
+                    "diskSizeGB": null,
+                    "tier": null,
+                    "diskEncryptionSet": null
+                },
+                {
+                    "lun": 1,
+                    "createOption": "attach",
+                    "deleteOption": "Detach",
+                    "caching": "None",
+                    "writeAcceleratorEnabled": false,
+                    "id": null,
+                    "name": "test_DataDisk_1",
+                    "storageAccountType": null,
+                    "diskSizeGB": null,
+                    "tier": null,
+                    "diskEncryptionSet": null
+                },
+                {
+                    "lun": 2,
+                    "createOption": "attach",
+                    "deleteOption": "Detach",
+                    "caching": "None",
+                    "writeAcceleratorEnabled": false,
+                    "id": null,
+                    "name": "test_DataDisk_2",
+                    "storageAccountType": null,
+                    "diskSizeGB": null,
+                    "tier": null,
+                    "diskEncryptionSet": null
+                },
+                {
+                    "lun": 3,
+                    "createOption": "attach",
+                    "deleteOption": "Detach",
+                    "caching": "None",
+                    "writeAcceleratorEnabled": false,
+                    "id": null,
+                    "name": "test_DataDisk_3",
+                    "storageAccountType": null,
+                    "diskSizeGB": null,
+                    "tier": null,
+                    "diskEncryptionSet": null
+                }
+                
+            ]
+        },
+        "dataDiskResources": {
+            "value": [
+                {
+                    "name": "test_DataDisk_0",
+                    "sku": "Premium_LRS",
+                    "properties": {
+                        "diskSizeGB": 1024,
+                        "creationData": {
+                            "createOption": "empty"
+                        },
+                        "maxShares": "4"
+                    }
+                },
+                {
+                    "name": "test_DataDisk_1",
+                    "sku": "Premium_LRS",
+                    "properties": {
+                        "diskSizeGB": 1024,
+                        "creationData": {
+                            "createOption": "empty"
+                        }
+                    }
+                },
+                {
+                    "name": "test_DataDisk_2",
+                    "sku": "UltraSSD_LRS",
+                    "properties": {
+                        "diskSizeGB": 1024,
+                        "creationData": {
+                            "createOption": "empty"
+                        }
+                    }
+                },
+                {
+                    "name": "test_DataDisk_3",
+                    "sku": "PremiumV2_LRS",
+                    "properties": {
+                        "diskSizeGB": 1024,
+                        "creationData": {
+                            "createOption": "empty"
+                        }
+                    }
+                }
+
+            ]
+        },
+        "enablePeriodicAssessment": {
+            "value": "ImageDefault"
+        },
+        "securityType": {
+            "value": "TrustedLaunch"
+        },
+        "secureBoot": {
+            "value": true
+        },
+        "vTPM": {
+            "value": true
+        }
+    }
+}

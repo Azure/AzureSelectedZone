@@ -1,0 +1,294 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string"
+        },
+        "networkSecurityGroupName": {
+            "type": "string"
+        },
+        "networkSecurityGroupRules": {
+            "type": "array"
+        },
+        "subnetName": {
+            "type": "string"
+        },
+        "virtualNetworkName": {
+            "type": "string"
+        },
+        "addressPrefixes": {
+            "type": "array"
+        },
+        "subnets": {
+            "type": "array"
+        },
+        "publicIpAddressName": {
+            "type": "string"
+        },
+        "publicIpAddressType": {
+            "type": "string"
+        },
+        "publicIpAddressSku": {
+            "type": "string"
+        },
+        "virtualMachineName": {
+            "type": "string"
+        },
+        "virtualMachineComputerName": {
+            "type": "string"
+        },
+        "virtualMachineRG": {
+            "type": "string"
+        },
+        "osDiskType": {
+            "type": "string"
+        },
+        "osDiskDeleteOption": {
+            "type": "string"
+        },
+        "virtualMachineSize": {
+            "type": "string"
+        },
+        "networkInterfaceName": {
+            "type": "string"
+        },
+        "nicDeleteOption": {
+            "type": "string"
+        },
+        "adminUsername": {
+            "type": "string"
+        },
+        "admimPassword": {
+            "type": "string"
+        },
+        "dataDisks": {
+            "type": "array"
+        },
+        "dataDiskResources": {
+            "type": "array"
+        },
+        "enablePeriodicAssessment": {
+            "type": "string"
+        },
+        "securityType": {
+            "type": "string"
+        },
+        "secureBoot": {
+            "type": "bool"
+        },
+        "vTPM": {
+            "type": "bool"
+        }
+    },
+    "variables": {
+        "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
+        "vnetName": "[last(split(variables('vnetId'), '/'))]",
+        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
+        "publicIpName": "[concat(parameters('publicIpAddressName'), parameters('virtualMachineName'))]",
+        "publicIpName2": "[concat(parameters('publicIpAddressName'), parameters('virtualMachineName'),1)]"
+    },
+    "resources": [
+        {
+            "name": "[concat(parameters('networkInterfaceName'), parameters('virtualMachineName'))]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2022-11-01",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/publicIpAddresses/', variables('publicIpName'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "subnet": {
+                                "id": "[variables('subnetRef')]"
+                            },
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIpAddress": {
+                                "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/publicIpAddresses',variables('publicIpName'))]",
+                                "properties": {
+                                    "deleteOption": "Delete"
+                                }
+                            },
+                            "primary": true
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "[concat(parameters('networkInterfaceName'), parameters('virtualMachineName'), 1)]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2022-11-01",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/publicIpAddresses/', variables('publicIpName2'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "subnet": {
+                                "id": "[variables('subnetRef')]"
+                            },
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIpAddress": {
+                                "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/publicIpAddresses',variables('publicIpName2'))]",
+                                "properties": {
+                                    "deleteOption": "Delete"
+                                }
+                            },
+                            "primary": true
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/publicIpAddresses",
+            "apiVersion": "2020-08-01",
+            "name": "[variables('publicIpName')]",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "[parameters('publicIpAddressSku')]"
+            },
+            "properties": {
+                "publicIpAllocationMethod": "[parameters('publicIpAddressType')]"
+            }
+        },
+        {
+            "type": "Microsoft.Network/publicIpAddresses",
+            "apiVersion": "2020-08-01",
+            "name": "[variables('publicIpName2')]",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "[parameters('publicIpAddressSku')]"
+            },
+            "properties": {
+                "publicIpAllocationMethod": "[parameters('publicIpAddressType')]"
+            }
+        },
+        {
+            "name": "[concat( parameters('virtualMachineName'),parameters('dataDiskResources')[copyIndex('managedDiskResources')].name)]",
+            "type": "Microsoft.Compute/disks",
+            "apiVersion": "2022-03-02",
+            "location": "[parameters('location')]",
+            "properties": "[parameters('dataDiskResources')[copyIndex('managedDiskResources')].properties]",
+            "sku": {
+                "name": "[parameters('dataDiskResources')[copyIndex('managedDiskResources')].sku]"
+            },
+            "copy": {
+                "name": "managedDiskResources",
+                "count": "[length(parameters('dataDiskResources'))]"
+            }
+        },
+        {
+            "name": "[parameters('virtualMachineName')]",
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2024-11-01",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/networkInterfaces/', concat(parameters('networkInterfaceName'), parameters('virtualMachineName')))]",
+                "[concat('Microsoft.Network/networkInterfaces/', concat(parameters('networkInterfaceName'), parameters('virtualMachineName'),1))]"
+                ,"managedDiskResources"
+            ]
+             ,
+            "placement": {
+                "zonePlacementPolicy": "Any",
+                "excludeZones" : [
+                    "2"
+                ]
+            },
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[parameters('virtualMachineSize')]"
+                },
+                "additionalCapabilities": {
+                    "ultraSSDEnabled": true
+                },
+                 "securityProfile": {
+                    "securityType": "[parameters('securityType')]",
+                    "uefiSettings": {
+                        "secureBootEnabled": "[parameters('secureBoot')]",
+                        "vTpmEnabled": "[parameters('vTPM')]"
+                    }
+                },
+                "storageProfile": {
+                    "osDisk": {
+                        "createOption": "fromImage",
+                        "caching": "ReadWrite",
+                        "managedDisk": {
+                            "storageAccountType": "[parameters('osDiskType')]"
+                        },
+                        "diskSizeGB": 30,
+                        "deleteOption": "[parameters('osDiskDeleteOption')]"
+                    },
+                    "alignRegionalDisksToVMZone": "true",
+                    "imageReference": {
+                        "publisher": "canonical",
+                        "offer": "0001-com-ubuntu-server-focal",
+                        "sku": "20_04-lts-gen2",
+                        "version": "20.04.202405130"
+                    }
+                     ,
+                     "copy": [
+                         {
+                             "name": "dataDisks",
+                             "count": "[length(parameters('dataDisks'))]",
+                             "input": {
+                                 "lun": "[parameters('dataDisks')[copyIndex('dataDisks')].lun]",
+                                 "createOption": "[parameters('dataDisks')[copyIndex('dataDisks')].createOption]",
+                                 "caching": "[parameters('dataDisks')[copyIndex('dataDisks')].caching]",
+                                 "diskSizeGB": "[parameters('dataDisks')[copyIndex('dataDisks')].diskSizeGB]",
+                                 "managedDisk": {
+                                     "storageAccountType": "[parameters('dataDisks')[copyIndex('dataDisks')].storageAccountType]",
+                                     "id": "[coalesce(parameters('dataDisks')[copyIndex('dataDisks')].id, if(equals(parameters('dataDisks')[copyIndex('dataDisks')].name, json('null')), json('null'), resourceId('Microsoft.Compute/disks', concat( parameters('virtualMachineName'),parameters('dataDisks')[copyIndex('dataDisks')].name))))]"
+                                 },
+                                 "deleteOption": "[parameters('dataDisks')[copyIndex('dataDisks')].deleteOption]",
+                                 "writeAcceleratorEnabled": "[parameters('dataDisks')[copyIndex('dataDisks')].writeAcceleratorEnabled]"
+                             }
+                         }
+                    ]
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('networkInterfaceName'), parameters('virtualMachineName')))]",
+                            "properties": {
+                                "deleteOption": "[parameters('nicDeleteOption')]",
+                                "primary": true
+                            }
+                        },
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('networkInterfaceName'), parameters('virtualMachineName'),1))]",
+                            "properties": {
+                                "deleteOption": "[parameters('nicDeleteOption')]",
+                                "primary": false
+                            }
+                        }
+                    ]
+                },
+                "osProfile": {
+                    "computerName": "[parameters('virtualMachineComputerName')]",
+                    "adminUsername": "[parameters('adminUsername')]",
+                    "adminPassword": "[parameters('admimPassword')]",
+                    "linuxConfiguration": {
+                        "patchSettings": {
+                            "assessmentMode": "[parameters('enablePeriodicAssessment')]",
+                            "patchMode": "ImageDefault"
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "adminUsername": {
+            "type": "string",
+            "value": "[parameters('adminUsername')]"
+        }
+    }
+}
