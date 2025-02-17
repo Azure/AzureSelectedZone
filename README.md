@@ -30,7 +30,7 @@ Azure Selected Zone allows you to create a zonal VM without the overhead of zone
 > [!NOTE]
  > - Only one of the zone='n' or zonePlacementPolicy can be provided at a time during VM create. If both are provided at the same time, an error will be thrown.
  > - Only one of includeZones/excludeZones can be provided at a time. If both are provided at the same time, an error will be thrown.
- > - The scope of this Private Preview allows SI VM creation via REST API or ARM template
+ > - The scope of this Private Preview allows SI VM creation via REST API or ARM template in EastUS2EUAP region
 
 ## Benefits of Azure Selected Zone
 This will improve customers’ zonal deployment experience in comparison to current explicit selection of zone (1/2/3). Azure will attempt to select the most optimal zone and aid in improved zonal VM allocation success rate! 
