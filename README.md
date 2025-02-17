@@ -6,7 +6,7 @@ Welcome to the onboarding guide for Azure Selected Zone, an exciting new feature
 ## Supportability
 - We currently support creating new Disk(s) & IPs along with the VM using [Azure Selected zone via portal](https://github.com/MicrosoftDocs/azure-compute-docs/articles/virtual-machines/create-portal-availability-zone.md). The above capability was previewed in July 2024
 - Currently we are previewing Existing Disk(s) & Existing IP attach scenarios with AnyZone VM: [Sign-up here](https://nam06.safelinks.protection.outlook.com/?url=https%3A%2F%2Fforms.microsoft.com%2Fr%2Ff2QnB22Mbt&data=05%7C02%7Csgujjarlapud%40microsoft.com%7C6a8db3e469f148c4902a08dd4cd13a5e%7C72f988bf86f141af91ab2d7cd011db47%7C1%7C0%7C638751183721195381%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=e4NdNb5BAU0HgJOVpcYQIkF%2BStBPZ0xjW3gPKiIIXgg%3D&reserved=0)
-- **Unsupported scenarios:** PPG, Dedicated Host & Capacity Reservation groups are not supported to be created with an AnyZone VM as of now (they will be included in the future)
+- **Unsupported scenarios:** Proximity Placement Groups (PPG), Dedicated Host & Capacity Reservation groups are not supported to be created with an AnyZone VM as of now (they will be included in the future)
 
 ## What is Azure Selected Zone?
 Azure Selected Zone allows you to create a zonal VM without the overhead of zone selection. VM Create API will accept a new param value zonePlacementPolicy=’any’ during Single Instance VM creation. (Customers don’t have to specify ‘zones’ property with this feature.) This will let Azure pick the most optimal landing zone for the VM during creation, based on multiple infrastructure constraints including compute & storage capacity.
@@ -60,12 +60,12 @@ Managed Disk can also be created API, PowerShell, CLI by following [Overview of 
 ### Step 4: Create VM using Azure Selected Zone via REST API call
 - PUT Request latest API URI: (make edits where the URI is **{bold}**)
 ```log
-https://management.azure.com/subscriptions/{provideWhitelistedSubIdHERE}/resourceGroups/{provideResourceGroupCreatedInStep2HERE}/providers/Microsoft.Compute/virtualMachines/{GiveAVMNameHERE}?api-version=2024-11-01
+https://management.azure.com/subscriptions/{ProvideWhitelistedSubIdHere}/resourceGroups/{ProvideResourceGroupCreatedInStep2Here}/providers/Microsoft.Compute/virtualMachines/{GiveAVMNameHere}?api-version=2024-11-01
 ```
 - Request Body Json Sample: (make edits where **{bold}**)
 ```json
 {
-	"name": "{GiveAVMNameHERE}",
+	"name": "{GiveAVMNameHere}",
 	"location": "East US 2 EUAP",
   "placement": {
 		"zonePlacementPolicy": "Any",
