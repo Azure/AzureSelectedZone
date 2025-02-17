@@ -58,11 +58,11 @@ In the Azure portal, select "Managed Disks" resource create. Provide the followi
 Review & create the Managed Disk
 Managed Disk can also be created API, PowerShell, CLI by following [Overview of Azure Disk Storage - Azure Virtual Machines | Microsoft Learn](https://learn.microsoft.com/en-us/azure/virtual-machines/managed-disks-overview)
 ### Step 4: Create VM using Azure Selected Zone via REST API call
-- PUT Request latest API URI: (make edits where the URI is **{bold}**)
+- PUT Request latest API URI: (make edits where the URI is **{}**)
 ```log
 https://management.azure.com/subscriptions/{ProvideWhitelistedSubIdHere}/resourceGroups/{ProvideResourceGroupCreatedInStep2Here}/providers/Microsoft.Compute/virtualMachines/{GiveAVMNameHere}?api-version=2024-11-01
 ```
-- Request Body Json Sample: (make edits where **{bold}**)
+- Request Body Json Sample: (make edits where **{}**)
 ```json
 {
 	"name": "{GiveAVMNameHere}",
@@ -145,7 +145,7 @@ After few moments of response preview, verify if the VM was created with the Nam
 ### Step 2:  Review the template & parameters files
 Template & parameters files are pre-populated with sample values. Please modify as desired. 
 ### Step 3. Run deploy.ps1 in PowerShell
-Upload the files is Cloud Shell is being used. Else store the above files in a location from where the PowerShell commands are run: (make edits where **{bold}**)
+Upload the files is Cloud Shell is being used. Else store the above files in a location from where the PowerShell commands are run: (make edits where **{}**)
 ``log
 Run the script: > .\deploy.ps1 -Location ‘eastus2euap’ -SubscriptionId ‘{WhitelistedSubscriptionID}’ -ResourceGroupName ‘{giveDesiredRGName}’ -TemplateParameterFile ‘parameters.json’ -TemplateFile ‘template.json’ -VirtualMachineName ‘{giveDesiredVMName}’ -VirtualNetworkName ‘{giveDesiredNICName}’
 ``
