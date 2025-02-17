@@ -42,19 +42,19 @@ Get your intended Azure Subscription that will be used for preview to be allowli
 > Contact: asz-support@microsoft.com for allowlisting assistance
 ### Step 2: Create a Network Interface
 In the Azure portal, select "Network Interface" resource create. Provide the following details:
--	Subscription: Whitelisted Subscription
--	Resource Group: Create New (preferably) & note this for later steps
--	Region: East US2 EUAP
--	Name: Give any name and note this for later steps
+- Subscription: Allowlisted Subscription
+- Resource Group: Create New (preferably) & note this for later steps
+- Region: East US2 EUAP
+- Name: Give any name and note this for later steps
 Review & create the Network Interface
 Network Interface can also be created API, PowerShell, CLI by following [Create Network Interface](https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-network-interface?tabs=azure-portal#create-a-network-interface)
 ### Step 3: Create a Managed Disk
 In the Azure portal, select "Managed Disks" resource create. Provide the following details:
-•	Subscription: Whitelisted Subscription
-•	Resource Group: Same resource group that is used for Network Interface creation
-•	Name: Give any name and note this for later steps
-•	Region: East US2 EUAP
-•	Availability Zone: No infrastructure redundancy required (create regional disk to get the best validation for Azure Selected Zone VM)
+- Subscription: Allowlisted Subscription
+- Resource Group: Same resource group that is used for Network Interface creation
+- Name: Give any name and note this for later steps
+- Region: East US2 EUAP
+- Availability Zone: No infrastructure redundancy required (create regional disk to get the best validation for Azure Selected Zone VM)
 Review & create the Managed Disk
 Managed Disk can also be created API, PowerShell, CLI by following [Overview of Azure Disk Storage - Azure Virtual Machines | Microsoft Learn](https://learn.microsoft.com/en-us/azure/virtual-machines/managed-disks-overview)
 ### Step 4: Create VM using Azure Selected Zone via REST API call
