@@ -25,8 +25,8 @@ Azure Selected Zone allows you to create a zonal VM without the overhead of zone
 ```
 **Description of Placement Property:**
 - zonePlacementPolicy (required): will accept the value “any” indicating Azure will pick the most optimal zone to create the zonal VM
-- ExcludeZones (optional): to specify if any particular zone(s) need to be avoided while Azure selects the landing zone for the VM
-- IncludeZones (optional): to specify if any sub-set of zone(s) ONLY need to be used while Azure selects the landing zone for the VM
+- excludeZones (optional): to specify if any particular zone(s) need to be avoided while Azure selects the landing zone for the VM
+- includeZones (optional): to specify if any sub-set of zone(s) ONLY need to be used while Azure selects the landing zone for the VM
 > [!NOTE]
  > - Only one of the zone='n' or zonePlacementPolicy can be provided at a time during VM create. If both are provided at the same time, an error will be thrown.
  > - Only one of includeZones/excludeZones can be provided at a time. If both are provided at the same time, an error will be thrown.
@@ -132,7 +132,7 @@ https://management.azure.com/subscriptions/{ProvideWhitelistedSubIdHere}/resourc
 ### Step 5: Send the REST API PUT request
 - Provide the required authentication token
 - Send the REST API request from the API tool
-### Step 6: Review the createad VM
+### Step 6: Review the created VM
 After few moments of response preview, verify if the VM was created with the Name provided in the API Call:
 ![image](./AnyZoneVM.png)
 
