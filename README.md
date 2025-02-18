@@ -134,6 +134,7 @@ https://management.azure.com/subscriptions/{ProvideWhitelistedSubIdHere}/resourc
 - Send the REST API request from the API tool
 ### Step 6: Review the created VM
 After few moments of response preview, verify if the VM was created with the Name provided in the API Call:
+
 ![image](./AnyZoneVM.png)
 
 ## Creating VM using Azure Selected Zone via ARM template
@@ -151,6 +152,7 @@ Run the script: > .\deploy.ps1 -Location ‘eastus2euap’ -SubscriptionId ‘{W
 ```
 ### Step 4: Review the created VM
 After few moments of response preview, verify if the VM was created with the Name provided in the API Call.
+
 ![image](./AnyZoneVM.png)
 
 ## Troubleshooting
