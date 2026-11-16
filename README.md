@@ -1,20 +1,19 @@
-# (PREVIEW) Azure Selected Zone
+# (PREVIEW) Automatic Zone Placement
 
 ## Introduction 
-Welcome to the onboarding guide for Azure Selected Zone, an exciting new feature in Azure Compute that enables greater flexibility and resilience in your VM deployments. This guide will walk you through the essentials of this feature, highlight its benefits, and provide a step-by-step process on how to utilize it effectively.
+Welcome to the onboarding guide for Automatic Zone Placement, an exciting new feature in Azure Compute that enables greater flexibility and resilience in your VM deployments. This document will walk you through the essentials of this feature, highlight its benefits, and provide a step-by-step guide on how to utilize it effectively.
 
 ## Supportability
-- We currently support creating new Disk(s) & IPs along with the VM using [Azure Selected zone via portal](https://github.com/MicrosoftDocs/azure-compute-docs/articles/virtual-machines/create-portal-availability-zone.md). The above capability was previewed in July 2024
-- Currently we are previewing Existing Disk(s) & Existing IP attach scenarios with AnyZone VM: [Sign-up here](https://nam06.safelinks.protection.outlook.com/?url=https%3A%2F%2Fforms.microsoft.com%2Fr%2Ff2QnB22Mbt&data=05%7C02%7Csgujjarlapud%40microsoft.com%7C6a8db3e469f148c4902a08dd4cd13a5e%7C72f988bf86f141af91ab2d7cd011db47%7C1%7C0%7C638751183721195381%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=e4NdNb5BAU0HgJOVpcYQIkF%2BStBPZ0xjW3gPKiIIXgg%3D&reserved=0)
-- **Unsupported scenarios:** Proximity Placement Groups (PPG), Dedicated Host & Capacity Reservation groups are not supported to be created with an AnyZone VM as of now (they will be included in the future)
+- Currently we are previewing sign-up for previewing New/Existing Disk(s), New/Existing IP attach scenarios with Automatic Zone Placement VM: [Sign-up here](https://aka.ms/automatic-zone-placement)
+- **Unsupported scenarios:** Proximity Placement Groups (PPG), Dedicated Host & Capacity Reservation groups are not supported to be created with an  Automatic Zone Placement VM as of now (they will be included in the future)
 
-## What is Azure Selected Zone?
-Azure Selected Zone allows you to create a zonal VM without the overhead of zone selection. VM Create API will accept a new param value zonePlacementPolicy=’any’ during Single Instance VM creation. (Customers don’t have to specify ‘zones’ property with this feature.) This will let Azure pick the most optimal landing zone for the VM during creation, based on multiple infrastructure constraints including compute & storage capacity.
+## What is Automatic Zone Placement?
+Automatic Zone Placement allows you to create a VM without the overhead of zone selection. VM Create API will accept a new param value zonePlacementPolicy=’auto’ during Single Instance VM creation. (Customers don’t have to specify ‘zones’ property with this feature.) This will let Azure pick the most optimal landing zone for the VM during creation (initial allocation) & re-allocation, based on multiple infrastructure constraints including compute & storage capacity.
 ### VM PUT REST API new property:
 **Placement Property Sample:**
 ```json
 "placement": {
-		"zonePlacementPolicy": "Any",
+		"zonePlacementPolicy": "Auto",
 		"excludeZones": [
 			"2"
 		]
@@ -24,20 +23,20 @@ Azure Selected Zone allows you to create a zonal VM without the overhead of zone
 	}
 ```
 **Description of Placement Property:**
-- zonePlacementPolicy (required): will accept the value “any” indicating Azure will pick the most optimal zone to create the zonal VM
+- zonePlacementPolicy (required): will accept the value “Auto” indicating Azure will pick the most optimal zone during  creation (initial allocation) & re-allocation
 - excludeZones (optional): to specify if any particular zone(s) need to be avoided while Azure selects the landing zone for the VM
-- includeZones (optional): to specify if any sub-set of zone(s) ONLY need to be used while Azure selects the landing zone for the VM
+- includeZones (optional): to specify if any sub-set of zone(s) ONLY need to be used
 > [!NOTE]
  > - Only one of the zone='n' or zonePlacementPolicy can be provided at a time during VM create. If both are provided at the same time, an error will be thrown.
  > - Only one of includeZones/excludeZones can be provided at a time. If both are provided at the same time, an error will be thrown.
  > - The scope of this Private Preview allows SI VM creation via REST API or ARM template in EastUS2EUAP region
 
-## Benefits of Azure Selected Zone
-This will improve customers’ zonal deployment experience in comparison to current explicit selection of zone (1/2/3). Azure will attempt to select the most optimal zone and aid in improved zonal VM allocation success rate! 
+## Benefits of Automatic Zone Placement
+This will improve customers’ regional deployment experience in comparison to current explicit selection of zone (1/2/3). Azure will attempt to select the most optimal zone and aid in improved VM allocation success rate! 
 
 ## Creating VM using Azure Selected Zone via REST API
 ### Step 1: Subscription allowlisting
-Get your intended Azure Subscription that will be used for preview to be allowlisted by the Product PoCs below (if not already). Or fill [this form](https://nam06.safelinks.protection.outlook.com/?url=https%3A%2F%2Fforms.microsoft.com%2Fr%2Ff2QnB22Mbt&data=05%7C02%7Csgujjarlapud%40microsoft.com%7C6a8db3e469f148c4902a08dd4cd13a5e%7C72f988bf86f141af91ab2d7cd011db47%7C1%7C0%7C638751183721195381%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=e4NdNb5BAU0HgJOVpcYQIkF%2BStBPZ0xjW3gPKiIIXgg%3D&reserved=0) & the team will get back in 1-2 business days.
+Get your intended Azure Subscription that will be used for preview to be allowlisted by the Product PoCs below (if not already). Or fill [this form](https://aka.ms/automatic-zone-placement) & the team will get back in 1-2 business days.
 > [!NOTE]
 > Contact: asz-support@microsoft.com for allowlisting assistance
 ### Step 2: Create a Network Interface
@@ -68,7 +67,7 @@ https://management.azure.com/subscriptions/{ProvideWhitelistedSubIdHere}/resourc
 	"name": "{GiveAVMNameHere}",
 	"location": "East US 2 EUAP",
   "placement": {
-		"zonePlacementPolicy": "Any",
+		"zonePlacementPolicy": "Auto",
 	},
 	"properties": {
 		"hardwareProfile": {
@@ -90,7 +89,6 @@ https://management.azure.com/subscriptions/{ProvideWhitelistedSubIdHere}/resourc
 				"deleteOption": "Detach",
 				"diskSizeGB": 30
 			},
-			"alignRegionalDisksToVMZone": "true",
 			"dataDisks": [
 				{
 					"lun": 0,
@@ -127,17 +125,13 @@ https://management.azure.com/subscriptions/{ProvideWhitelistedSubIdHere}/resourc
 	}
 }
 ```
->[!IMPORTANT]
-> 			"alignRegionalDisksToVMZone": "true" value MUST be "true". This flag will permanently convert Region Disk to Zonal.
 ### Step 5: Send the REST API PUT request
 - Provide the required authentication token
 - Send the REST API request from the API tool
 ### Step 6: Review the created VM
 After few moments of response preview, verify if the VM was created with the Name provided in the API Call:
 
-![image](./AnyZoneVM.png)
-
-## Creating VM using Azure Selected Zone via ARM template
+## Creating VM using Automatic Zone Placement via ARM template
 ### Step 1: Download the template, parameters & deploy raw files from below: 
 1. [template.json](./template.json)
 2. [parameters.json](./parameters.json)
@@ -152,8 +146,6 @@ Run the script: > .\deploy.ps1 -Location ‘eastus2euap’ -SubscriptionId ‘{W
 ```
 ### Step 4: Review the created VM
 After few moments of response preview, verify if the VM was created with the Name provided in the API Call.
-
-![image](./AnyZoneVM.png)
 
 ## Troubleshooting
 Feel free to reach out to (asz-support@microsoft.com) for any questions & issues
