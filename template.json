@@ -197,10 +197,7 @@
             ]
              ,
             "placement": {
-                "zonePlacementPolicy": "Any",
-                "excludeZones" : [
-                    "2"
-                ]
+                "zonePlacementPolicy": "Auto"
             },
             "properties": {
                 "hardwareProfile": {
@@ -226,7 +223,6 @@
                         "diskSizeGB": 30,
                         "deleteOption": "[parameters('osDiskDeleteOption')]"
                     },
-                    "alignRegionalDisksToVMZone": "true",
                     "imageReference": {
                         "publisher": "canonical",
                         "offer": "0001-com-ubuntu-server-focal",
